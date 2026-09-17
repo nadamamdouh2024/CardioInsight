@@ -460,8 +460,11 @@ CardioInsight/
 
 ├── 📁 Notebooks/
 
-│   ├── CardioInsight.ipynb ===>  main note book (without deployment)
+│   ├── 01_eda.ipynb
 
+│   └── 02_models_experiments.ipynb
+
+│
 
 ├── 📁 src/
 
@@ -486,10 +489,6 @@ CardioInsight/
 ├── README.md
 
 └── .gitignore
-
-└── CardioInsight.ipynb  (1)
-                             💡 Note: Both implementations are functional. If a temporary execution issue occurs, simply rerun  the affected cell or request.  
-└── CardioInsight.ipynb  (2)
 
 ```
 
@@ -527,63 +526,33 @@ CardioInsight/
 
 # 🚀 How To Use
 
-## 1️⃣ Clone the Repository
+CardioInsight is designed to be run through **Google Colab**.
 
-```bash
-
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-
-cd CardioInsight
-
-```
-
----
-
-## 2️⃣ Create a Virtual Environment
-
-```bash
-
-python -m venv venv
-
-```
-
-### Windows
-
-```bash
-
-venv\Scripts\activate
-
-```
-
----
-
-## 3️⃣ Install Dependencies
-
-```bash
-
-pip install -r requirements.txt
-
-```
-
----
-
-# 📓 Running the Notebook
-
-The project notebook can be opened and executed using **Google Colab**.
-
-## 1️⃣ Open the Notebook
-
-Open:
+The repository only requires the following project files:
 
 ```text
-Notebooks/CardioInsight.ipynb
+CardioInsight/
+│
+├── 📓 Copy_of_CardioInsight_Combined.ipynb
+├── 📊 CardioInsight_Presentation.pptx
+└── 📖 README.md
 ```
 
-You can upload the notebook to Google Colab or open it directly from the GitHub repository.
+The complete application, model training workflow, FastAPI backend, Streamlit interface, and temporary deployment files are created and executed inside the Google Colab environment.
 
-## 2️⃣ Run the Notebook
+---
 
-Run the notebook cells in order. The notebook covers:
+# 📓 Running the Project with Google Colab
+
+The complete CardioInsight project is contained in:
+
+```text
+Copy_of_CardioInsight_Combined.ipynb
+```
+
+Upload this notebook to **Google Colab** and run the cells in order.
+
+The notebook includes:
 
 ```text
 Data Loading
@@ -603,58 +572,73 @@ Model Comparison
 SVM Selection
     ↓
 Model Serialization
+    ↓
+FastAPI API
+    ↓
+Streamlit Interface
+    ↓
+ngrok Live Demo
 ```
 
-## 3️⃣ Install Notebook Dependencies
+## 1️⃣ Open the Notebook
 
-If you are running the notebook in Google Colab, run:
+Open **Google Colab** and upload:
+
+```text
+Copy_of_CardioInsight_Combined.ipynb
+```
+
+Run the notebook cells from top to bottom.
+
+## 2️⃣ Install Dependencies
+
+The notebook installs the required deployment packages:
 
 ```python
-!pip install -q pandas numpy matplotlib seaborn scikit-learn xgboost joblib
+!pip install -q streamlit fastapi uvicorn pyngrok joblib
 ```
 
-## 4️⃣ Save the Trained Model
+The notebook also contains the dependencies required for the Machine Learning and data-analysis workflow.
 
-After selecting the SVM (RBF) model, the notebook saves the trained model and preprocessing artifacts:
+## 3️⃣ Create the Model Artifact
+
+After training and selecting the SVM (RBF) model, the notebook creates:
 
 ```text
 cardio_model.pkl
 ```
 
-The saved artifact contains:
+The artifact contains the trained model and the preprocessing components required for prediction.
+
+The notebook then creates the temporary deployment files:
 
 ```text
-SVM Model
-Ordinal Encoder
-StandardScaler
-Feature Columns
-Categorical Feature Definitions
-Numerical Feature Definitions
+api.py
+app.py
 ```
 
-## 5️⃣ Run FastAPI from Colab
+These files are generated inside the Colab session only.
 
-The notebook can run the FastAPI backend:
+## 4️⃣ Run FastAPI
+
+FastAPI is started inside Colab on port `8000`:
 
 ```python
-!uvicorn api:app --host 0.0.0.0 --port 8000
+!pkill -f uvicorn
+!uvicorn api:app --host 0.0.0.0 --port 8000 > api.log 2>&1 &
 ```
 
-The API can then be exposed publicly using ngrok.
+## 5️⃣ Create the FastAPI ngrok Tunnel
 
-## 6️⃣ Configure ngrok
-
-Create a free ngrok account and obtain your own authentication token.
-
-In Google Colab, run:
+Configure your own ngrok authentication token:
 
 ```python
 !ngrok config add-authtoken "YOUR_NGROK_AUTHTOKEN"
 ```
 
-**Do not commit or upload your real ngrok token to GitHub.**
+**Do not upload your real ngrok token to GitHub.**
 
-Then create a public tunnel for FastAPI:
+Then create the public API tunnel:
 
 ```python
 from pyngrok import ngrok
@@ -665,22 +649,31 @@ api_tunnel = ngrok.connect(8000)
 
 API_URL = api_tunnel.public_url
 
+print("API URL:")
 print(API_URL)
 ```
 
-## 7️⃣ Run Streamlit
+## 6️⃣ Run Streamlit
 
-Start the Streamlit application:
+Start the Streamlit interface on port `8501`:
 
 ```python
-!streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+!pkill -f streamlit
+!streamlit run app.py --server.port 8501 --server.address 0.0.0.0 > streamlit.log 2>&1 &
 ```
 
-Then expose the Streamlit application through ngrok:
+Then expose it using ngrok:
 
 ```python
+import time
+
+time.sleep(3)
+
+!cat streamlit.log
+
 streamlit_tunnel = ngrok.connect(8501)
 
+print("Open your CardioInsight app:")
 print(streamlit_tunnel.public_url)
 ```
 
@@ -688,71 +681,11 @@ Open the generated public URL to access the CardioInsight interface.
 
 ### ⚠️ Important
 
-When running CardioInsight through **Google Colab + ngrok**, the Colab session must remain active because FastAPI and Streamlit are running inside the Colab environment.
+When running CardioInsight through **Google Colab + ngrok**, the Colab session must remain active because the FastAPI and Streamlit servers are running inside the Colab environment.
 
-The generated ngrok URLs are temporary and may change when a new tunnel is created.
+The ngrok URLs are temporary and may change when a new tunnel is created.
 
----
-
-# ⚡ Run The Application
-
-CardioInsight consists of two parts:
-
-```text
-
-FastAPI Backend
-
-        +
-
-Streamlit Frontend
-
-```
-
-Both need to be running.
-
----
-
-## 4️⃣ Start FastAPI
-
-From the project root:
-
-```bash
-
-uvicorn app.main:app --reload
-
-```
-
-The API will be available at:
-
-```text
-
-http://127.0.0.1:8000
-
-```
-
-### API Documentation
-
-FastAPI automatically provides interactive Swagger documentation:
-
-```text
-
-http://127.0.0.1:8000/docs
-
-```
-
----
-
-## 5️⃣ Start Streamlit
-
-Open a ****new terminal**** while FastAPI is still running:
-
-```bash
-
-streamlit run streamlit_app.py
-
-```
-
-Streamlit will open the CardioInsight interface in your browser.
+No local FastAPI or Streamlit setup is required. The deployment files generated by the notebook are temporary and remain inside the Colab session.
 
 ---
 
