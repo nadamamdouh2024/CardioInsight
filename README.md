@@ -115,14 +115,12 @@ The target column is:
 Heart_Disease
 
 ```
+ Value | Meaning          
+ ----  | ---------------- 
 
-| Value | Meaning          |
+ | `0` | No Heart Disease |
 
-| ----: | ---------------- |
-
-| `0` | No Heart Disease |
-
-| `1` | Heart Disease    |
+ | `1` | Heart Disease    |
 
 After cleaning and feature engineering:
 
