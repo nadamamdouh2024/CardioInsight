@@ -981,20 +981,17 @@ The `probability` represents the model's estimated probability for the ****Heart
 # 👥 Team / Owners
 
 This project was developed by:
+-----------------------------
 
-| Name                       |
+ ****Ammar Yasser****     
 
-| -------------------------- |
+ ****Abdallah Essam****  
 
-| ****Ammar Yasser****     |
+ ****Youssef Abdallah**** 
 
-| ****Abdallah Essam****   |
+ ****Nada Mohamed****     
 
-| ****Youssef Abdallah**** |
-
-| ****Nada Mohamed****     |
-
-| ****Bassant Ibrahim****  |
+ ****Bassant Ibrahim****  
 
 ---
 
