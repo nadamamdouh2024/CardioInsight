@@ -432,12 +432,6 @@ CardioInsight/
 
 │
 
-├── 📁 app/
-
-│   └── main.py
-
-│
-
 ├── 📁 Data/
 
 │   ├── 📁 origin/
@@ -450,45 +444,11 @@ CardioInsight/
 
 │       └── synthetic_heart_disease_cleaned.csv
 
-│
-
-├── 📁 models/
-
-│   └── best_model.pkl
-
-│
-
-├── 📁 Notebooks/
-
-│   ├── 01_eda.ipynb
-
-│   └── 02_models_experiments.ipynb
-
-│
-
-├── 📁 src/
-
-│   ├── __init__.py
-
-│   ├── config.py
-
-│   ├── data_loader.py
-
-│   ├── evaluate.py
-
-│   ├── model.py
-
-│   └── preprocessing.py
-
-│
-
-├── streamlit_app.py
-
 ├── requirements.txt
 
 ├── README.md
 
-└── .gitignore
+└── Copy_of_CardioInsight_Combined.ipynb              ( Full Project)
 
 ```
 
